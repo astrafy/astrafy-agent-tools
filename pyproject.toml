@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astrafy-agent-tools"
+version = "0.1.0"
+description = "A hub for Astrafy's AI agent tools such as skills, MCPs, commands, hooks, etc."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "requests>=2.31",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+]
+
+[project.scripts]
+astrafy-agent-tools = "cli:main"
+
+[tool.setuptools]
+py-modules = ["cli"]
+package-dir = {"" = "src"}
