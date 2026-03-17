@@ -29,7 +29,7 @@ Read these three references, then create the files:
 | `seed_`, `raw_` | [Raw](references/layers/0-raw.md) |
 | `snp_`, `stg_` | [Staging](references/layers/1-staging.md) |
 | `int_` | [Intermediate](references/layers/2-intermediate.md) |
-| `dim_`, `fct_`, `brg_`, `mart_`, `agg_`, `rpt_`, `util_` | [Datamart](references/layers/3-datamart.md) |
+| `dim_`, `fct_`, `brg_`, `mart_`, `agg_`, `rpt_`, `retl_`, `util_` | [Datamart](references/layers/3-datamart.md) |
 
 ## Editing Existing Models
 

@@ -15,6 +15,7 @@
 | **Datamart** | Mart | `mart_` | Table | `mart_<entity>` | Dims requiring fct computations (optional) |
 | **Datamart** | Aggregate | `agg_` | Incremental / Table | `agg_<grain>_<entity>` | Re-grained facts (optional) |
 | **Datamart** | Report | `rpt_` | Table / Incremental | `rpt_<dashboard>` | Dashboard-specific tables |
+| **Datamart** | Rev ETL | `retl_` | Table / Incremental | `retl_<destination>_<purpose>` | Dumps data into external systems |
 | **Datamart** | Utility | `util_` | Table | `util_<purpose>` | Date spines, calendars |
 
 ## Model Flow Rules
@@ -27,6 +28,7 @@
 - `dim_`, `fct_`, `brg_` ref: `int_` or `stg_` directly
 - `mart_`, `agg_` ref: `dim_`, `fct_`, `brg_` (both are optional - downstream models can skip them)
 - `rpt_` refs: `mart_`, `agg_`, or `dim_`/`fct_`/`brg_` directly when no mart/agg is needed
+- `retl_` refs: `mart_`, `agg_`
 - `util_` can be joined by any `int_` or datamart model
 
 ## Folder Structure
@@ -41,6 +43,7 @@ models/intermediate/<domain>/int_<domain>__<entity>.{sql,yml}
 models/datamart/<domain>/{dim,fct}_<entity>.{sql,yml}
 models/datamart/<domain>/brg_<entity1>_<entity2>.sql
 models/datamart/<domain>/{mart_<entity>,agg_<grain>_<entity>,rpt_<dashboard>}.sql
+models/datamart/<destination>/retl_<destination>_<purpose>.sql
 models/utilities/util_<purpose>.{sql,yml}
 tests/generic/<test_name>.sql
 ```

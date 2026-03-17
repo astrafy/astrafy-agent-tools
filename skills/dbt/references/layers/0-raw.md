@@ -11,3 +11,18 @@
 
 - Required: Source freshness (`loaded_at` field)
 - Recommended: `not_null` on primary identifier
+
+### Source Freshness
+
+Define freshness on critical sources in your source YAML files:
+
+```yaml
+sources:
+  - name: stripe
+    loaded_at_field: _fivetran_synced
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 36, period: hour}
+    tables:
+      - name: charges
+```

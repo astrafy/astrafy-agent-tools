@@ -4,15 +4,19 @@
 
 | Type | Pattern | Examples | Notes |
 |------|---------|----------|-------|
-| Boolean | `is_*` / `has_*` / `can_*` | `is_active`, `has_purchased`, `can_edit` | Always verb prefix; avoid negatives (`is_active` not `is_not_active`) |
+| Boolean | `is_*` / `has_*` / `can_*` / `was_*` / `should_*` | `is_active`, `has_purchased`, `can_edit` | Always verb prefix; avoid negatives (`is_active` not `is_not_active`) |
 | Date | `*_date` | `order_date`, `signup_date` | `DATE` type (YYYY-MM-DD) |
 | Timestamp | `*_at` | `created_at`, `loaded_at` | Use `TIMESTAMP` (UTC default). Non-UTC: suffix with tz (`created_at_pt`). Events: past-tense verb (`created_at`, `deleted_at`) |
 | ID / Key | `*_id` | `customer_id`, `order_id` | PKs named `<entity>_id`. String data type unless performance requires otherwise |
+| Surrogate Key | `*_sk_id` | `customer_sk_id`, `order_sk_id` | Distinguishes surrogate keys from natural `*_id` keys |
 | Amount / Metric | `*_amount` / `*_total` / `*_price` | `revenue_amount`, `total_tax` | Numeric currency/totals |
+| Quantity | `*_qty` | `order_qty` | Quantities of items |
+| Total | `total_*` | `total_tax` | Sum of multiple columns together |
 | Count | `*_count` | `login_count`, `order_count` | Integer counts |
+| Percentage / Ratio | `*_pct` / `*_rate` / `*_ratio` (0-1); `*_pct_100` / `*_rate_100` / `*_ratio_100` (0-100) | `conversion_rate`, `subscribed_pct_100` | Append `_100` for 0-100 scale |
 | Categorical | `*_type` / `*_category` / `*_status` / `*_group` | `customer_type`, `order_status` | String fields for grouping/segmenting |
-| Array | `[plural_noun]` | `tags`, `items` | BigQuery `REPEATED` fields |
-| Struct | `*_details` / `*_record` | `customer_details`, `shipping_record` | BigQuery `STRUCT` fields |
+| Array | `*_list` | `tag_list`, `item_list` | BigQuery `REPEATED` fields |
+| Struct | `[entity]_details` | `customer_details`, `shipping_details` | BigQuery `STRUCT` fields |
 | System / Audit | `_*` (leading underscore) | `_loaded_at`, `_dbt_updated_at` | Metadata, ELT sync timestamps, dbt audit columns |
 
 ### Units of Measure
@@ -40,7 +44,8 @@ When a column represents a unit, the unit **must** be a suffix: `duration_s`, `d
 - **Keywords**: Lowercase (`select`, `from`, `where`)
 - **Aliases**: Always use `as`
 - **No `SELECT *`**: Explicitly list columns in all models. `SELECT *` is only permitted in the final CTE (`select * from <final_cte>`).
-- **Comments**: Use Jinja comments (`{# ... #}`) when comments should not compile into SQL
+- **Comments**: Only to explain business edge-cases, not technical SQL. Use Jinja comments (`{# ... #}`) when comments should not compile into SQL
+- **Aliases**: Table aliases must be explicit without abbreviations (e.g., `customers` not `c`)
 
 ### Fields & Aggregation
 
@@ -50,7 +55,7 @@ When a column represents a unit, the unit **must** be a suffix: `duration_s`, `d
 
 ### Joins
 
-- Prefer `union all` over `union` (unless you explicitly need dedup)
+- Prefer `union all by name` over `union` (unless you explicitly need dedup)
 - Prefix columns with table name when joining 2+ tables
 - Be explicit: `inner join`, `left join` (never implicit)
 - Avoid `right join` — switch table order instead
@@ -68,6 +73,11 @@ When a column represents a unit, the unit **must** be a suffix: `duration_s`, `d
 - Name CTEs descriptively
 - Repeated logic across models should become intermediate models
 - End model with `select * from <final_cte>`
+
+### Model Configuration
+
+- Model-specific attributes (sort/dist keys, etc.) go in the model file
+- Directory-wide configuration goes in `dbt_project.yml`
 
 ## YAML Style
 

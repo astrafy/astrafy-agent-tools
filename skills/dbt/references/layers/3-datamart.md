@@ -10,6 +10,7 @@
 | Mart | `mart_` | Table | `mart_<entity>` | Dims requiring fct computations (optional) |
 | Aggregate | `agg_` | Incremental / Table | `agg_<grain>_<entity>` | Re-grained facts (optional) |
 | Report | `rpt_` | Table / Incremental | `rpt_<dashboard>` | Dashboard-specific tables |
+| Rev ETL | `retl_` | Table / Incremental | `retl_<destination>_<purpose>` | Dumps data into external systems |
 | Utility | `util_` | Table | `util_<purpose>` | Date spines, calendars |
 
 ## Examples
@@ -22,6 +23,7 @@
 - `dim_`, `fct_`, `brg_` ref: `int_` or `stg_` directly
 - `mart_`, `agg_` ref: `dim_`, `fct_`, `brg_`
 - `rpt_` refs: `mart_`, `agg_`, `dim_`/`fct_`/`brg_`
+- `retl_` refs: `mart_`, `agg_`
 - `util_` can be joined by any `int_` or datamart model
 
 ## Materialization
