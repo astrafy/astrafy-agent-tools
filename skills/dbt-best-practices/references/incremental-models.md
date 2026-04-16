@@ -84,6 +84,21 @@ from {{ source('raw', 'events') }}
 {% endif %}
 ```
 
+## BigQuery Optimizations
+
+- **`require_partition_filter: true`**: Add to large incremental tables to prevent accidental full-table scans by downstream queries. Forces consumers to include the partition column in their `WHERE` clause.
+- **`copy_partitions: true`**: Use with `insert_overwrite` to copy partitions via metadata operations instead of re-inserting rows. Significantly faster for large partitions.
+
+```sql
+config(
+    materialized='incremental',
+    incremental_strategy='insert_overwrite',
+    partition_by={"field": "event_date", "data_type": "date", "granularity": "day"},
+    require_partition_filter=true,
+    copy_partitions=true
+)
+```
+
 ## `is_incremental()` Patterns
 
 The `{% if is_incremental() %}` block filters data on incremental runs. On first run or `--full-refresh`, it evaluates to `false` (full load).

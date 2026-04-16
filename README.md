@@ -6,30 +6,30 @@ A central hub for Astrafy's AI agent tools: skills, MCPs, commands, hooks, and m
 
 | Skill | Path | Description |
 |-------|------|-------------|
-| dbt | `skills/dbt` | SQL style guide, BigQuery optimization, naming conventions, YAML standards |
+| dbt-best-practices | `skills/dbt-best-practices` | SQL style guide, BigQuery optimization, naming conventions, YAML standards |
 ## Install a skill
 
 Run a single command to download a skill into your project — no clone required:
 
 ```bash
 # For Claude
-uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt --dest .claude/
+uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt-best-practices --dest .claude/
 
 # For Cursor
-uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt --dest .cursor/
+uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt-best-practices --dest .cursor/
 
 # For other agents (not all included are compatible)
-uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt --dest .agents/
+uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt-best-practices --dest .agents/
 ```
 
-This fetches the `skills/dbt` folder from the repository and writes it to `./<agent>/<skill>/` in your current directory.
+This fetches the `skills/dbt-best-practices` folder from the repository and writes it to `./<agent>/<skill>/` in your current directory.
 
-You can replace `skills/dbt` with any path in the repo, and `--dest` with wherever you want the files to land (defaults to `./<agent>/`).
+You can replace `skills/dbt-best-practices` with any path in the repo, and `--dest` with wherever you want the files to land (defaults to `./<agent>/`).
 
 By default the CLI **refuses to overwrite** existing local files. If any target file already exists, it lists the conflicts and exits. To allow overwriting, pass `--overwrite`:
 
 ```bash
-uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt --dest .claude/ --overwrite
+uvx --from git+https://github.com/astrafy/astrafy-agent-tools.git astrafy-agent-tools skills/dbt-best-practices --dest .claude/ --overwrite
 ```
 
 ## System-wide install
@@ -43,7 +43,7 @@ uv tool install git+https://github.com/astrafy/astrafy-agent-tools.git
 Then use it anywhere:
 
 ```bash
-astrafy-agent-tools skills/dbt --dest .claude/
+astrafy-agent-tools skills/dbt-best-practices --dest .claude/
 ```
 
 ## Developer setup
@@ -67,5 +67,5 @@ uv run pre-commit install
 ### Run the CLI locally
 
 ```bash
-uv run astrafy-agent-tools skills/dbt --dest /tmp/test
+uv run astrafy-agent-tools skills/dbt-best-practices --dest /tmp/test
 ```
