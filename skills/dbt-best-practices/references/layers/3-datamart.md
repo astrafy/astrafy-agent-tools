@@ -6,7 +6,7 @@ The datamart is organized into three ordered sub-layers. Each sub-layer can cont
 
 ## 01_core — Kimball Models
 
-Prefixes: `dim_`, `fct_`, `brg_`, `util_`
+Prefixes: `dim_`, `fct_`, `brg_`
 
 Core dimensional models following Kimball star-schema design. These are the foundational building blocks of the datamart.
 
@@ -16,7 +16,7 @@ Facts and dimensions never join to other `dim_` tables to pick up FK sk_ids — 
 - `dim_employees_scd2` — SCD2 dimension preserving historical changes to employee attributes. Built from an intermediate model that consumes an upstream `stg_*_scd2` snapshot. Each row represents a version of the entity, with `dbt_valid_from` and `dbt_valid_to` tracking the validity period.
 - `fct_timesheets` — fact table at the timesheet-entry grain, referencing dimension keys.
 - `brg_employee_projects` — bridge table resolving N:M relationships between employees and projects.
-- `util_date_spine` — date spine or calendar utility table joinable by any datamart model.
+- `dim_date` — daily calendar date dimension joinable by any datamart model.
 
 ### SCD2 Dimensions
 
@@ -35,7 +35,6 @@ SCD2 dimensions (`dim_<entity>_scd2`) present historical attribute changes track
 ```
 models/datamart/01_core/<department>/{dim,fct,brg}_<entity>.{sql,yml}
 models/datamart/01_core/<department>/dim_<entity>_scd2.{sql,yml}
-models/datamart/01_core/<department>/util_<purpose>.{sql,yml}
 ```
 
 `<department>` is optional (e.g., `finance/`, `human_resources/`, `project_management/`).

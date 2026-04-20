@@ -14,7 +14,6 @@
 | **Datamart / 01_core** | Dimension SCD2 | `dim_` + `_scd2` | Table / Incremental | `dim_<entity>_scd2` | SCD2 dimension built from an `int_` model that consumes an upstream `stg_*_scd2` snapshot |
 | **Datamart / 01_core** | Fact | `fct_` | Incremental / Table | `fct_<entity>` | Fact tables |
 | **Datamart / 01_core** | Bridge | `brg_` | Table | `brg_<entity1>_<entity2>` | N:M relationship PKs |
-| **Datamart / 01_core** | Utility | `util_` | Table | `util_<purpose>` | Date spines, calendars |
 | **Datamart / 02_enriched** | Aggregate | `agg_` | Incremental / Table | `agg_<grain>_<entity>` | Re-grained facts |
 | **Datamart / 02_enriched** | Wide | `wide_` | Table | `wide_<entity>` | Dimensions enriched with fact computations |
 | **Datamart / 03_consumption** | Report | `rpt_` | Table / Incremental | `rpt_<dashboard>` | Dashboard-specific tables |
@@ -32,7 +31,6 @@
 - `dim_`, `dim_*_scd2`, `fct_`, `brg_` ref: `int_` only (01_core — intermediate layer is mandatory)
 - `wide_`, `agg_` ref: `dim_`, `fct_`, `brg_` (02_enriched — downstream models can skip this layer)
 - `rpt_`, `retl_`, `ai_`, `comp_`, `rec_` ref: `wide_`, `agg_`, `dim_`, `fct_`, `brg_` (03_consumption)
-- `util_` can be joined by any `int_` or datamart model
 
 **Why `int_` only for 01_core?** FK surrogate keys are deterministic hashes of `record_source + natural_key` generated via `null_safe_surrogate_key` in the intermediate layer. Because the same natural key always produces the same sk_id, facts already carry correct dimension FK sk_ids without ever joining to the dimension. Integrity is verified by the `relationships` tests on the datamart FKs, not by joins. Do not "fix" a fact by joining to a `dim_` to pick up an sk_id — the sk_id is already there from intermediate.
 
@@ -58,7 +56,6 @@ models/intermediate/03_transformed/int_<entity>_<suffix>.{sql,yml}
 models/intermediate/04_enriched/int_<entity>_enriched.{sql,yml}
 models/datamart/01_core/<department>/{dim,fct,brg}_<entity>.{sql,yml}       # department subfolder optional
 models/datamart/01_core/<department>/dim_<entity>_scd2.{sql,yml}            # SCD2 dimension
-models/datamart/01_core/<department>/util_<purpose>.{sql,yml}
 models/datamart/02_enriched/<department>/{agg_<grain>_<entity>,wide_<entity>}.{sql,yml}  # department subfolder optional
 models/datamart/03_consumption/reporting/rpt_<dashboard>.{sql,yml}                           # purpose subfolder optional
 models/datamart/03_consumption/reverse_etl/retl_<dest>_<purpose>.{sql,yml}

@@ -29,7 +29,7 @@ Read these three references, then create the required files:
 | `seed_`, `raw_` | | [Raw](references/layers/0-raw.md) |
 | `stg_` (incl. `stg_*_scd2` snapshots) | | [Staging](references/layers/1-staging.md) |
 | `int_` | | [Intermediate](references/layers/2-intermediate.md) |
-| `dim_`, `dim_*_scd2`, `fct_`, `brg_`, `util_` | 01_core | [Datamart](references/layers/3-datamart.md) |
+| `dim_`, `dim_*_scd2`, `fct_`, `brg_` | 01_core | [Datamart](references/layers/3-datamart.md) |
 | `agg_`, `wide_` | 02_enriched | [Datamart](references/layers/3-datamart.md) |
 | `rpt_`, `retl_`, `ai_`, `comp_`, `rec_` | 03_consumption | [Datamart](references/layers/3-datamart.md) |
 
