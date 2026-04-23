@@ -59,7 +59,7 @@ end
 Examples:
 
 ```sql
-, {{ null_safe_surrogate_key('customer_id') }} as customer_sk_id
+, {{ null_safe_surrogate_key('customer_id', 'record_source') }} as customer_sk_id
 
 -- with a qualified record_source column:
 , {{ null_safe_surrogate_key('invoices.company_id_fk', 'invoices.record_source') }} as company_sk_id
@@ -92,7 +92,7 @@ For foreign keys referencing other entities, generate the FK surrogate key in th
 Use the project macro `null_safe_surrogate_key` (in `macros/null_safe_surrogate_key.sql`) for **every** sk_id and FK sk_id in the intermediate layer. It wraps `dbt_utils.generate_surrogate_key` in a NULL guard:
 
 ```sql
-, {{ null_safe_surrogate_key('<natural_key_col>') }} as <entity>_sk_id
+, {{ null_safe_surrogate_key('<natural_key_col>', '<record_source_column>') }} as <entity>_sk_id
 
 -- with a qualified record_source column:
 , {{ null_safe_surrogate_key('invoices.company_id_fk', 'invoices.record_source') }} as company_sk_id
